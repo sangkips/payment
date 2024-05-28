@@ -1,4 +1,0 @@
--r tests.txt
-
-django-debug-toolbar
-ipython
