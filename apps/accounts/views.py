@@ -44,9 +44,6 @@ class AuthenticationView(GenericViewSet):
                         "lastUpdatedPassword": user.last_updated_password,
                         "email": user.email,
                         "emailVerified": user.email_verified,
-                        "roles": [
-                            user.role
-                        ]
                     }
                 }, status=status.HTTP_201_CREATED)
         except Exception as e:
