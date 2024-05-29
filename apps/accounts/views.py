@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from apps.accounts.serializers import RegisterSerializer
-from apps.accounts.tasks import AuthenticationHandler
+
 
 # Create your views here.
 
@@ -32,7 +32,8 @@ class AuthenticationView(GenericViewSet):
             serializer.is_valid(raise_exception=True)
             user = serializer.save()
             
-            access_token = AuthenticationHandler.create_access_token(request, user=user)
+            # access_token = AuthenticationHandler.create_access_token(request, user=user)
+            
             return Response(
                 {
                     "success": True,
@@ -45,9 +46,7 @@ class AuthenticationView(GenericViewSet):
                         "emailVerified": user.email_verified,
                         "roles": [
                             user.role
-                        ],
-                        "accessToken": access_token.token,
-                        "scope": access_token.scope
+                        ]
                     }
                 }, status=status.HTTP_201_CREATED)
         except Exception as e:
