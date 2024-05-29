@@ -1,9 +1,14 @@
+import logging
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from requests import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
+from rest_framework import status
 
 from apps.accounts.serializers import RegisterSerializer
+from apps.accounts.tasks import AuthenticationHandler
 
 # Create your views here.
 
@@ -13,7 +18,6 @@ class GenericViewSet(ViewSet):
     permission_classes = [AllowAny, ]
 
 class AuthenticationView(GenericViewSet):
-  
     permission_classes = [AllowAny, ]
 
     @swagger_auto_schema(
@@ -22,5 +26,33 @@ class AuthenticationView(GenericViewSet):
                    400: 'Bad Request'},
     )
     
-    def register():
-        pass
+    def register(self, request):
+        try:
+            serializer = RegisterSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = serializer.save()
+            
+            access_token = AuthenticationHandler.create_access_token(request, user=user)
+            return Response(
+                {
+                    "success": True,
+                    'data': {
+                        "id": user.id,
+                        "uuid": user.uuid,
+                        "firstName": user.first_name,
+                        "lastUpdatedPassword": user.last_updated_password,
+                        "email": user.email,
+                        "emailVerified": user.email_verified,
+                        "roles": [
+                            user.role
+                        ],
+                        "accessToken": access_token.token,
+                        "scope": access_token.scope
+                    }
+                }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            logging.error(e)
+            return Response(
+                {"status": status.HTTP_400_BAD_REQUEST, "message": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )

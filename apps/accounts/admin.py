@@ -18,7 +18,7 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'full_name', 'last_name','admin', 'created_at',
+    list_display = ('email', 'first_name', 'last_name','admin', 'created_at',
                     'updated_at','days_since_last_login')
     list_filter = ("created_at",)
     date_hierarchy = 'created_at'

@@ -75,13 +75,13 @@ CUSTOM_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    #'oauth2_provider',
+    'oauth2_provider',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'rangefilter',
     'drf_yasg',
-    #'corsheaders',
+    'corsheaders',
     #'actstream',
 ]
 
@@ -126,6 +126,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -133,6 +134,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    
 ]
 
 ROOT_URLCONF = "payment.urls"
@@ -217,3 +219,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 INSTALLED_APPS = DEFAULT_APPS + CUSTOM_APPS + THIRD_PARTY_APPS
 
 AUTH_USER_MODEL = 'accounts.User'
+LOGIN_URL = '/admin/login/'
+
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+        # Add other scopes as needed
+    }
+}

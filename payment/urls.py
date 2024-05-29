@@ -34,7 +34,7 @@ urlpatterns = [
         'redoc', cache_timeout=0), name='schema-redoc'),
     path('favicon.ico', favicon_view),
     # urls for the tokens app
-    # url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 
     # enable the admin interface
     url(r'^admin/', admin.site.urls),
