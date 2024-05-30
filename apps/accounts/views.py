@@ -32,8 +32,6 @@ class AuthenticationView(GenericViewSet):
             serializer.is_valid(raise_exception=True)
             user = serializer.save()
             
-            # access_token = AuthenticationHandler.create_access_token(request, user=user)
-            
             return Response(
                 {
                     "success": True,
@@ -41,9 +39,9 @@ class AuthenticationView(GenericViewSet):
                         "id": user.id,
                         "uuid": user.uuid,
                         "firstName": user.first_name,
-                        "lastUpdatedPassword": user.last_updated_password,
+                        "lastName": user.last_name,
                         "email": user.email,
-                        "emailVerified": user.email_verified,
+            
                     }
                 }, status=status.HTTP_201_CREATED)
         except Exception as e:
