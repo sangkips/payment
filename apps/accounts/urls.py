@@ -8,4 +8,9 @@ urlpatterns = [
         views.AuthenticationView.as_view({'post': 'register'}),
         name='register'
     ),
+    path(
+        'user/login',
+        views.AuthenticationView.as_view({'post': 'login'}),
+        name='login'
+    ),
 ]

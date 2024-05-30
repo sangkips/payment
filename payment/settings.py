@@ -220,6 +220,8 @@ INSTALLED_APPS = DEFAULT_APPS + CUSTOM_APPS + THIRD_PARTY_APPS
 
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = "admin/login"
 
 OAUTH2_PROVIDER = {
     'SCOPES': {
@@ -235,3 +237,4 @@ REST_FRAMEWORK = {
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ]
 }
+

@@ -11,7 +11,7 @@ from drf_yasg import openapi
 from django.urls import re_path as url, include
 
 public_apis = [
-    # urls for the auth app
+    # 
     url(r'^api/v1/accounts/', include("apps.accounts.urls")),
    
 ]
@@ -20,7 +20,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title=config("API_TITLE"),
         default_version=config("API_VERSION"),
-        description="These are the main APIs for Payment Gateway",
+        description="This is the main API for Payment Gateway",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
@@ -33,10 +33,10 @@ urlpatterns = [
     path('developer/doc', schema_view.with_ui(
         'redoc', cache_timeout=0), name='schema-redoc'),
     path('favicon.ico', favicon_view),
-    # urls for the tokens app
+    
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 
-    # enable the admin interface
+    
     url(r'^admin/', admin.site.urls),
 ]
 

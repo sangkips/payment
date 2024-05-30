@@ -5,8 +5,9 @@ from django.contrib.auth import get_user_model
 from decouple import config
 import re
 from django.core.exceptions import ValidationError
+from rest_framework.exceptions import APIException
 
-from apps.accounts.tasks import PasswordEncryption
+from apps.accounts.tasks import PasswordEncryption, UserHandler
 
 
 User = get_user_model()
@@ -77,3 +78,31 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         self.validated_password(data['password'])
         return data
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True)
+
+    def validate_email(self, email):
+    # Convert email to lowercase for consistency
+        email = email.lower()
+    
+    # Retrieve the user associated with the given email
+        user = UserHandler.get_user(email=email)
+        
+        # Check if the user exists
+        if not user:
+            raise APIException({
+                "success": False,
+                "message": "Incorrect email or password.",
+            })
+        
+        # Check if the user's email is verified
+        if not user.email_verified:
+            raise APIException({
+                "success": False,
+                "message": "Please verify your email to continue",
+            })
+    
+        return email
